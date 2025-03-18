@@ -141,8 +141,10 @@ class TPV {
         this.tables.forEach(table => {
             const div = document.createElement('div');
             div.className = `table-item ${this.selectedTable === table.id ? 'selected' : ''}`;
+            const total = table.order.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0);
             div.innerHTML = `
                 <span onclick="tpv.selectTable(${table.id})">Mesa ${table.id}${table.occupied ? ' (Ocupada)' : ''}</span>
+                <span class="total">Total: ${total.toFixed(2)}€</span>
                 <button class="delete-btn" onclick="tpv.deleteTable(${table.id})">🗑️</button>
             `;
             tablesList.appendChild(div);
@@ -172,13 +174,17 @@ class TPV {
 
     showTablesModal() {
         const modal = document.getElementById('tables-modal');
-        modal.style.display = 'block';
-        this.renderTables();
+        if (modal) {
+            modal.style.display = 'block';
+            this.renderTables();
+        }
     }
 
     closeTablesModal() {
         const modal = document.getElementById('tables-modal');
-        modal.style.display = 'none';
+        if (modal) {
+            modal.style.display = 'none';
+        }
     }
 
     // Sistema de pedidos
@@ -283,31 +289,40 @@ class TPV {
     }
 
     setupEventListeners() {
-        document.getElementById('add-category').onclick = () => {
-            const name = prompt('Nombre de la categoría:');
-            if (name && !this.categories.includes(name)) {
-                this.categories.push(name);
-                this.saveData();
-                this.renderCategories();
-            }
-        };
+        const addCategoryBtn = document.getElementById('add-category');
+        if (addCategoryBtn) {
+            addCategoryBtn.onclick = () => {
+                const name = prompt('Nombre de la categoría:');
+                if (name && !this.categories.includes(name)) {
+                    this.categories.push(name);
+                    this.saveData();
+                    this.renderCategories();
+                }
+            };
+        }
 
-        document.getElementById('add-product').onclick = () => {
-            const name = prompt('Nombre del producto:');
-            const price = parseFloat(prompt('Precio:'));
-            const category = prompt('Categoría:');
-            if (name && !isNaN(price) && category && this.categories.includes(category)) {
-                const newId = this.products.length ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
-                this.products.push({ id: newId, name, price, category });
-                this.saveData();
-                this.renderCategories();
-                this.renderProducts(category);
-            } else if (!this.categories.includes(category)) {
-                alert('La categoría no existe');
-            }
-        };
+        const addProductBtn = document.getElementById('add-product');
+        if (addProductBtn) {
+            addProductBtn.onclick = () => {
+                const name = prompt('Nombre del producto:');
+                const price = parseFloat(prompt('Precio:'));
+                const category = prompt('Categoría:');
+                if (name && !isNaN(price) && category && this.categories.includes(category)) {
+                    const newId = this.products.length ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
+                    this.products.push({ id: newId, name, price, category });
+                    this.saveData();
+                    this.renderCategories();
+                    this.renderProducts(category);
+                } else if (!this.categories.includes(category)) {
+                    alert('La categoría no existe');
+                }
+            };
+        }
 
-        document.getElementById('show-tables').onclick = () => this.showTablesModal();
+        const showTablesBtn = document.getElementById('show-tables');
+        if (showTablesBtn) {
+            showTablesBtn.onclick = () => this.showTablesModal();
+        }
     }
 }
 
