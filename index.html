@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TPV Bar</title>
+    <title>TPV Bar - Gestión Profesional</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -13,21 +14,27 @@
             <div id="categories-list"></div>
             <button id="add-category">Añadir Categoría</button>
             <button id="add-product">Añadir Producto</button>
+            <button id="show-tables">Ver Mesas</button>
         </div>
         
         <div class="main-content">
             <h1>TPV Bar</h1>
-            <div id="tables-section">
-                <h2>Mesas</h2>
-                <div id="tables-list"></div>
-            </div>
-            
             <div id="products-section">
                 <h2>Productos</h2>
                 <div id="products-list"></div>
             </div>
         </div>
     </div>
+
+    <!-- Modal para las mesas -->
+    <div id="tables-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="tpv.closeTablesModal()">×</span>
+            <h2>Mesas</h2>
+            <div id="tables-list"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

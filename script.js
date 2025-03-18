@@ -105,7 +105,7 @@ class TPV {
             `;
             productsList.appendChild(div);
         });
-        this.renderOrder(); // Siempre renderizamos el pedido después de los productos
+        this.renderOrder();
     }
 
     editProduct(productId) {
@@ -134,7 +134,7 @@ class TPV {
         }
     }
 
-    // Gestión de mesas
+    // Gestión de mesas (como modal)
     renderTables() {
         const tablesList = document.getElementById('tables-list');
         tablesList.innerHTML = '';
@@ -147,7 +147,11 @@ class TPV {
             `;
             tablesList.appendChild(div);
         });
-        this.renderProducts(this.currentCategory); // Refrescamos productos y pedido
+        const addTableBtn = document.createElement('button');
+        addTableBtn.textContent = 'Añadir Mesa';
+        addTableBtn.onclick = () => this.addTable();
+        tablesList.appendChild(addTableBtn);
+        this.renderProducts(this.currentCategory);
     }
 
     addTable() {
@@ -164,6 +168,17 @@ class TPV {
             this.saveData();
             this.renderTables();
         }
+    }
+
+    showTablesModal() {
+        const modal = document.getElementById('tables-modal');
+        modal.style.display = 'block';
+        this.renderTables();
+    }
+
+    closeTablesModal() {
+        const modal = document.getElementById('tables-modal');
+        modal.style.display = 'none';
     }
 
     // Sistema de pedidos
@@ -183,7 +198,8 @@ class TPV {
             }
             table.occupied = true;
             this.saveData();
-            this.renderTables(); // Refrescamos toda la interfaz
+            this.renderTables();
+            this.closeTablesModal();
         }
     }
 
@@ -204,13 +220,13 @@ class TPV {
     renderOrder() {
         const productsList = document.getElementById('products-list');
         const existingOrder = productsList.querySelector('.order-list');
-        if (existingOrder) existingOrder.remove(); // Limpiamos el pedido anterior
+        if (existingOrder) existingOrder.remove();
 
         if (this.selectedTable) {
             const table = this.tables.find(t => t.id === this.selectedTable);
             const orderDiv = document.createElement('div');
             orderDiv.className = 'order-list';
-            orderDiv.innerHTML = '<h3>Pedido Actual</h3>';
+            orderDiv.innerHTML = '<h3>Pedido Actual (Mesa ' + this.selectedTable + ')</h3>';
             
             if (table.order.length > 0) {
                 const ul = document.createElement('ul');
@@ -291,12 +307,9 @@ class TPV {
             }
         };
 
-        const addTableBtn = document.createElement('button');
-        addTableBtn.textContent = 'Añadir Mesa';
-        addTableBtn.onclick = () => this.addTable();
-        document.getElementById('tables-section').appendChild(addTableBtn);
+        document.getElementById('show-tables').onclick = () => this.showTablesModal();
     }
 }
 
 const tpv = new TPV();
-window.tpv = tpv; // Exponemos tpv globalmente para los eventos inline
+window.tpv = tpv;
