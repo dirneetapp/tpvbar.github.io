@@ -51,17 +51,29 @@ class TPV {
     // Gestión de categorías
     renderCategories() {
         const categoriesList = document.getElementById('categories-list');
-        categoriesList.innerHTML = '';
+        categoriesList.innerHTML = ''; // Limpiamos el contenedor
         this.categories.forEach(category => {
             const div = document.createElement('div');
             div.className = 'category-item';
-            div.innerHTML = `
-                <span onclick="tpv.renderProducts('${category}')">${category}</span>
-                <div>
-                    <button class="edit-btn" onclick="tpv.editCategory('${category}')">✏️</button>
-                    <button class="delete-btn" onclick="tpv.deleteCategory('${category}')">🗑️</button>
-                </div>
-            `;
+            const span = document.createElement('span');
+            span.textContent = category; // Texto directo
+            span.onclick = () => this.renderProducts(category); // Evento asignado
+            div.appendChild(span);
+            
+            const buttonDiv = document.createElement('div');
+            const editBtn = document.createElement('button');
+            editBtn.className = 'edit-btn';
+            editBtn.textContent = '✏️';
+            editBtn.onclick = () => this.editCategory(category);
+            buttonDiv.appendChild(editBtn);
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = '🗑️';
+            deleteBtn.onclick = () => this.deleteCategory(category);
+            buttonDiv.appendChild(deleteBtn);
+            
+            div.appendChild(buttonDiv);
             categoriesList.appendChild(div);
         });
     }
@@ -143,7 +155,7 @@ class TPV {
             div.className = `table-item ${this.selectedTable === table.id ? 'selected' : ''}`;
             const total = table.order.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0);
             div.innerHTML = `
-                <span onclick="tpv.selectTable(${table.id})">Mesa ${table.id}${table.occupied ? ' (Ocupada)' : ''}</span>
+                <span onclick="tpv.selectTable(${table.id}); tpv.closeTablesModal()">Mesa ${table.id}${table.occupied ? ' (Ocupada)' : ''}</span>
                 <span class="total">Total: ${total.toFixed(2)}€</span>
                 <button class="delete-btn" onclick="tpv.deleteTable(${table.id})">🗑️</button>
             `;
@@ -286,6 +298,7 @@ class TPV {
     selectTable(tableId) {
         this.selectedTable = tableId;
         this.renderTables();
+        this.closeTablesModal();
     }
 
     setupEventListeners() {

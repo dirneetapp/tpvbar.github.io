@@ -49,13 +49,24 @@ body {
     margin: 8px 0;
     background-color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 0;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-item {
+    background-color: #34495e; /* Fondo más oscuro para contraste */
+    color: #ecf0f1; /* Texto claro */
+}
+
+.category-item span {
+    flex: 1;
+    color: #ecf0f1; /* Aseguramos visibilidad */
+    cursor: pointer;
 }
 
 .category-item:hover, .product-item:hover, .table-item:hover {
@@ -78,15 +89,16 @@ body {
 }
 
 button {
-    padding: 10px 20px;
+    padding: 10px;
     margin: 8px 0;
     background-color: #3498db;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0;
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.3s;
+    min-width: 40px;
 }
 
 button:hover {
@@ -94,12 +106,12 @@ button:hover {
 }
 
 .edit-btn, .delete-btn {
-    padding: 4px 8px;
+    padding: 4px;
     margin-left: 8px;
     background-color: #27ae60;
     font-size: 12px;
-    border-radius: 4px;
-    min-width: 28px;
+    border-radius: 0;
+    min-width: 24px;
 }
 
 .delete-btn {
@@ -150,7 +162,7 @@ button:hover {
     margin-top: 20px;
     padding: 15px;
     background-color: #f9f9f9;
-    border-radius: 8px;
+    border-radius: 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -179,7 +191,7 @@ button:hover {
     background-color: #fff;
     margin: 10% auto;
     padding: 25px;
-    border-radius: 10px;
+    border-radius: 0;
     width: 90%;
     max-width: 600px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -226,13 +238,14 @@ button:hover {
     }
 
     button {
-        padding: 8px 15px;
+        padding: 8px;
+        min-width: 32px;
     }
 
     .edit-btn, .delete-btn {
-        padding: 3px 6px;
+        padding: 3px;
         font-size: 10px;
-        min-width: 24px;
+        min-width: 20px;
     }
 
     .modal-content {
